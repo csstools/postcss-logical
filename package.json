@@ -1,0 +1,22 @@
+{
+  "name": "postcss-logical-codepen",
+  "version": "1.0.0",
+  "scripts": {
+    "browser": "browserify browser.js | babel --presets=env | uglifyjs --compress > browser.bundle.js; gzip-size browser.bundle.js",
+    "start": "browserify codepen.js | babel --presets=env | uglifyjs --compress > codepen.bundle.js; gzip-size codepen.bundle.js"
+  },
+  "dependencies": {
+    "browserslist": "^3.2.0",
+    "postcss": "^6.0.20",
+    "postcss-dir-pseudo-class": "^2.1.0",
+    "postcss-logical": "file:..",
+    "postcss-nesting": "^4.2.1"
+  },
+  "devDependencies": {
+    "babel-cli": "^6.26.0",
+    "browserify": "^16.1.1",
+    "gzip-size-cli": "^2.1.0",
+    "uglify-js": "^3.3.16"
+  },
+  "private": true
+}
