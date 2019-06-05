@@ -18,7 +18,7 @@
   "scripts": {
     "build": "rollup --config .rollup.js --silent",
     "prepublishOnly": "npm test",
-    "pretest": "npm run build",
+    "pretest:tape": "npm run build",
     "test": "npm run test:ec && npm run test:js && npm run test:tape",
     "test:ec": "echint --ignore index.*.js test",
     "test:js": "eslint src/{*,**/*}.js --cache --ignore-path .gitignore --quiet",
