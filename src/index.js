@@ -1,7 +1,3 @@
-// tooling
-import postcss from 'postcss';
-
-// internal tooling
 import transformBorder from './lib/transform-border';
 import transformBorderRadius from './lib/transform-border-radius';
 import transformDirectionalShorthands from './lib/transform-directional-shorthands';
@@ -59,7 +55,7 @@ const transformsRegExp = new RegExp(`^(${Object.keys(transforms).join('|')})$`, 
 const unsplitPropRegExp = /^(border-block|border-block-end|border-block-start|border-inline|border-inline-end|border-inline-start)$/i;
 
 // plugin
-export default postcss.plugin('postcss-logical-properties', opts => {
+function postcssLogicalProperties(opts) {
 	opts = Object(opts);
 
 	const preserve = Boolean(opts.preserve);
@@ -69,35 +65,41 @@ export default postcss.plugin('postcss-logical-properties', opts => {
 		: 'ltr'
 	: false;
 
-	return root => {
-		root.walkDecls(transformsRegExp, decl => {
-			const parent = decl.parent;
-			const values = unsplitPropRegExp.test(decl.prop) ? [decl.value] : splitBySpace(decl.value, true);
-			const prop = decl.prop.toLowerCase();
+	return {
+		postcssPlugin: 'postcss-logical-properties',
+		Root: root => {
+			root.walkDecls(transformsRegExp, decl => {
+				const parent = decl.parent;
+				const values = unsplitPropRegExp.test(decl.prop) ? [decl.value] : splitBySpace(decl.value, true);
+				const prop = decl.prop.toLowerCase();
 
-			const replacer = transforms[prop](decl, values, dir);
+				const replacer = transforms[prop](decl, values, dir);
 
-			if (!replacer) {
-				return;
-			}
+				if (!replacer) {
+					return;
+				}
 
-			[].concat(replacer).forEach(replacement => {
-				if (replacement.type === 'rule') {
-					parent.before(replacement);
-				} else {
-					decl.before(replacement);
+				[].concat(replacer).forEach(replacement => {
+					if (replacement.type === 'rule') {
+						parent.before(replacement);
+					} else {
+						decl.before(replacement);
+					}
+				});
+
+				if (preserve) {
+					return;
+				}
+
+				decl.remove();
+
+				if (!parent.nodes.length) {
+					parent.remove();
 				}
 			});
-
-			if (preserve) {
-				return;
-			}
-
-			decl.remove();
-
-			if (!parent.nodes.length) {
-				parent.remove();
-			}
-		});
+		}
 	};
-});
+}
+postcssLogicalProperties.postcss = true;
+
+export default postcssLogicalProperties;
