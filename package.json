@@ -24,7 +24,7 @@
     "test:tape": "postcss-tape"
   },
   "engines": {
-    "node": ">=8.0.0"
+    "node": ">=10.0.0"
   },
   "peerDependencies": {
     "postcss": "^8.0.0"
