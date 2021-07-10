@@ -62,41 +62,22 @@ function postcssLogicalProperties(opts) {
 	const dir = !preserve && typeof opts.dir === 'string'
 		? /^rtl$/i.test(opts.dir)
 			? 'rtl'
-		: 'ltr'
-	: false;
+			: 'ltr'
+		: false;
 
 	return {
 		postcssPlugin: 'postcss-logical-properties',
-		Root: root => {
-			root.walkDecls(transformsRegExp, decl => {
+		Declaration: (decl) => {
+			if (transformsRegExp.test(decl.prop)) {
 				const parent = decl.parent;
 				const values = unsplitPropRegExp.test(decl.prop) ? [decl.value] : splitBySpace(decl.value, true);
 				const prop = decl.prop.toLowerCase();
 
-				const replacer = transforms[prop](decl, values, dir);
-
-				if (!replacer) {
-					return;
-				}
-
-				[].concat(replacer).forEach(replacement => {
-					if (replacement.type === 'rule') {
-						parent.before(replacement);
-					} else {
-						decl.before(replacement);
-					}
-				});
-
-				if (preserve) {
-					return;
-				}
-
-				decl.remove();
-
+				transforms[prop](decl, values, dir, preserve);
 				if (!parent.nodes.length) {
 					parent.remove();
 				}
-			});
+			}
 		}
 	};
 }
