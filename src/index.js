@@ -24,6 +24,12 @@ function postcssLogicalProperties(opts) {
 	const makeTransform = (transform) => {
 		return (decl) => {
 			const parent = decl.parent;
+			if (parent.parent && parent.parent.type === 'atrule' && parent.parent.name === 'keyframes') {
+				// https://drafts.csswg.org/css-animations/#typedef-keyframe-selector
+				// keyframe-selector only supports : from | to | <percentage>
+				return;
+			}
+
 			const values = splitBySpace(decl.value, true);
 			transform(decl, values, dir, preserve);
 			if (!parent.nodes.length) {
@@ -35,6 +41,12 @@ function postcssLogicalProperties(opts) {
 	const makeTransformWithoutSplittingValues = (transform) => {
 		return (decl) => {
 			const parent = decl.parent;
+			if (parent.parent && parent.parent.type === 'atrule' && parent.parent.name === 'keyframes') {
+				// https://drafts.csswg.org/css-animations/#typedef-keyframe-selector
+				// keyframe-selector only supports : from | to | <percentage>
+				return;
+			}
+
 			const values = [decl.value];
 			transform(decl, values, dir, preserve);
 			if (!parent.nodes.length) {

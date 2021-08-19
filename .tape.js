@@ -95,5 +95,9 @@ module.exports = {
 			dir: 'ltr',
 			preserve: true
 		}
+	},
+	'atrule_keyframes': {
+		message: 'does not produce invalid css when logical properties are used in @keyframes',
+		options: {}
 	}
 };

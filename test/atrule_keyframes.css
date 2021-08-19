@@ -1,0 +1,28 @@
+/* see : https://github.com/csstools/postcss-logical/issues/37 */
+@keyframes busy {
+
+	0%,
+	100% {
+		inset-inline-start: 0;
+		inset-inline-end: auto;
+		inline-size: 0;
+	}
+
+	33% {
+		inset-inline-start: 0;
+		inset-inline-end: auto;
+		inline-size: 100%;
+	}
+
+	33.01% {
+		inset-inline-start: auto;
+		inset-inline-end: 0;
+		inline-size: 100%;
+	}
+
+	66% {
+		inset-inline-start: auto;
+		inset-inline-end: 0;
+		inline-size: 0;
+	}
+}
