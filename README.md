@@ -39,8 +39,8 @@ physical, direction and dimension mappings in CSS, following the
 
 .banner {
   color: #222222;
-  top: 0; left: 5px; bottom: 10px; right: 5px;
-  padding-left: 20px; padding-right: 40px;
+  top: 0; right: 5px; bottom: 10px; left: 5px;  /* inset: logical 0 5px 10px; */
+  padding-left: 20px; padding-right: 40px;      /* padding-inline: 20px 40px; */
   resize: vertical;
   transition: color 200ms;
 }
@@ -60,8 +60,8 @@ physical, direction and dimension mappings in CSS, following the
   top: 0; left: 5px; bottom: 10px; right: 5px;
   inset: logical 0 5px 10px;
   padding-inline: 20px 40px;
-  resize: block;
   resize: vertical;
+  resize: block;
   transition: color 200ms;
 }
 ```
@@ -122,7 +122,7 @@ any `[dir]` attributes, consider using the following JavaScript:
 
 ```js
 // force at least one dir attribute (this can run at any time)
-document.documentElement.dir=document.documentElement.dir||'ltr';
+document.documentElement.dir = document.documentElement.dir || 'ltr';
 ```
 
 Otherwise, consider using the `dir` option to transform all logical properties
